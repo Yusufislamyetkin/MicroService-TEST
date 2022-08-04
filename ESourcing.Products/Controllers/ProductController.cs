@@ -1,4 +1,5 @@
-﻿using ESourcing.Products.Entites;
+﻿using ESourcing.Products.Dtos;
+using ESourcing.Products.Entites;
 using ESourcing.Products.Repositories.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -49,10 +50,9 @@ namespace ESourcing.Products.Controllers
 
         [HttpPost]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
-        public async Task<ActionResult<Product>> CreateProduct([FromBody] Product product)
+        public async Task<ActionResult<Product>> CreateProduct([FromBody] AddProductDto AddProductDto)
         {
-            await _productRepository.Create(product);
-            return CreatedAtRoute("GetProduct", new { id = product.Id }, product);
+            return Ok();
         }
 
         [HttpPut]
