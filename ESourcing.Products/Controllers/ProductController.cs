@@ -22,6 +22,7 @@ namespace ESourcing.Products.Controllers
             _productRepository = productRepository;
             _logger = logger;
         }
+
         #region Crud
 
         [HttpGet]
@@ -40,13 +41,11 @@ namespace ESourcing.Products.Controllers
             var product = await _productRepository.GetProduct(id);
             if (product == null)
             {
-                _logger.LogError($"Product with id : {id}, hasn t been found in database ");
+                _logger.LogError($"Product with id : {id},hasn't been found in databasei");
                 return NotFound();
-
             }
-            return Ok();
+            return Ok(product);
         }
-
 
         [HttpPost]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.Created)]
@@ -58,25 +57,17 @@ namespace ESourcing.Products.Controllers
 
         [HttpPut]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Product>> UpdateProduct([FromBody] Product product)
+        public async Task<IActionResult> UpdateProduct([FromBody] Product product)
         {
             return Ok(await _productRepository.Update(product));
         }
 
 
-        [HttpDelete("{id:length(24)}", Name = "GetProduct")]
-        [ProducesResponseType((int)HttpStatusCode.NotFound)]
+        [HttpDelete("{id:length(24)}")]
         [ProducesResponseType(typeof(Product), (int)HttpStatusCode.OK)]
-        public async Task<ActionResult<Product>> DeleteProduct(string id)
+        public async Task<IActionResult> DeleteProductById(string id)
         {
-            var product = await _productRepository.GetProduct(id);
-            if (product == null)
-            {
-                _logger.LogError($"Product with id : {id}, hasn t been found in database ");
-                return NotFound();
-
-            }
-            return Ok();
+            return Ok(await _productRepository.Delete(id));
         }
 
         #endregion
